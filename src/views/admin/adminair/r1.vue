@@ -23,7 +23,7 @@
         content: [
         { width: 'w70',   show: true, align: 'center', key: '*', name: '序号' },
         { width: 'w50x3', show: true, align: 'left', key: 'name', name: '名称' },
-        { width: 'flex1', show: true, align: 'right', key: 'Total_Power', name: '功率' }, 
+        { width: 'flex1', show: true, align: 'right', key: 'Total_Power', name: '功率' },
         ],
     })
 
@@ -38,18 +38,18 @@
         let chart = 'Line'
         let id = 'Line_DevicesPower'
         let attr = {
-            min: 0, 
+            min: 0,
             // max: 100,
-            extent: 4, 
+            extent: 4,
             colorList: [],
             legendArr: [],
             legendShow: false,
             labelShow: false,
             areaShow: false,
             y_name: '数值',
-            tool_dw: '', 
-            tool_name_x: '日期：', 
-            tool_name_y: '数值：', 
+            tool_dw: '',
+            tool_name_x: '日期：',
+            tool_name_y: '数值：',
         }
         let series = {data: []}
         series = data.map(v => {
