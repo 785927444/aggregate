@@ -4,8 +4,8 @@
     <aa-title title="聚合用户">
       <template #left-content></template>
       <template #right-content>
-        <div class="rad4 ptb5 plr8 flex-cc cursor bgi1 white ml10" 
-          v-if="state.content.find(v=>{return typeof(v.key) == 'object'}) && state.content.find(v=>{return typeof(v.key) == 'object'})['key'].hasOwnProperty('add')" 
+        <div class="rad4 ptb5 plr8 flex-cc cursor bgi1 white ml10"
+          v-if="state.content.find(v=>{return typeof(v.key) == 'object'}) && state.content.find(v=>{return typeof(v.key) == 'object'})['key'].hasOwnProperty('add')"
           @click.stop="addRef.onVisable(state.addItem)">
           <i-ep-plus class="f12 fw" /><span class="f14 ml2">{{state.content.find(v=>{return typeof(v.key) == 'object'})['key'].add}}</span>
         </div>
@@ -48,13 +48,23 @@
       { width: 'w50x2', show: true, align: 'left',  key: 'devices', name: '设备数量' },
       { width: 'w50x2', show: true, align: 'left',  key: 'up_adjustable', name: '最大上调容量' },
       { width: 'w50x2', show: true, align: 'left',  key: 'down_adjustable', name: '最大下调容量' },
-      { width: 'flex1', show: true, align: 'right', key: {}, name: '操作' }, 
+      { width: 'flex1', show: true, align: 'right', key: {}, name: '操作' },
     ],
     editFrom: [
       { required: true, editshow: 'none', name: '上级', key: 'parent_id', type: 'input' },
       { required: true, editshow: true, name: '名称', key: 'station_name', type: 'input' },
       // { required: false, editshow: true, name: '关联', key: 'node_id', type: 'select', list: [], label: 'name', value: 'id' },
       { required: false, editshow: true, name: '排序', key: 'order',  type: 'input' },
+      { required: true, editshow: true, name: '行业类型',  key: 'industry_type', type: 'select', list: [], value: 'id', label: 'name'  },
+      { required: true, editshow: true, key: 'administrative_areaid', name: '行政区域', type: 'input' },
+      { required: true, editshow: true, name: '联系人员',  key: 'contact', type: 'input' },
+      { required: true, editshow: true, name: '联系号码',  key: 'telephone', type: 'input' },
+      { required: true, editshow: true, key: 'day_out_response', name: '日前响应', type: 'select', list: values, label: 'name', value: 'value' },
+      { required: true, editshow: true, key: 'day_in_response', name: '日内响应', type: 'select', list: values, label: 'name', value: 'value'  },
+      { required: true, editshow: true, key: 'yn_sign', name: '是否签约', type: 'select', list: values, label: 'name', value: 'value'  },
+      { required: true, editshow: true, key: 'devices', name: '设备数量', type: 'input' },
+      { required: true, editshow: true, key: 'up_adjustable', name: '最大上调容量', type: 'input' },
+      { required: true, editshow: true, key: 'down_adjustable', name: '最大下调容量', type: 'input'  },
     ],
     addItem: {parent_id: '0'},
   })
@@ -75,6 +85,8 @@
         if(v.key == 'industry_type') v.list = [...state.industrys]
       })
     })
+
+    console.log('state.contentstate.contentstate.content',state.content)
     // 获取节点
     // let query2 = {model: 't_sensor', args: `class='3'`}
     // publicStore.http({Api: query2}).then(res=>{
@@ -140,8 +152,7 @@
     }
   }
 </script>
-  
+
 <style scoped lang="scss">
 
 </style>
-  
