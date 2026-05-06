@@ -4,8 +4,8 @@
     <aa-title :title="!isNull(publicStore.active)?publicStore.active.name:''">
       <template #left-content></template>
       <template #right-content>
-        <div class="rad4 ptb5 plr8 flex-cc cursor bgi1 white ml10" 
-          v-if="state.content.find(v=>{return typeof(v.key) == 'object'}) && state.content.find(v=>{return typeof(v.key) == 'object'})['key'].hasOwnProperty('add')" 
+        <div class="rad4 ptb5 plr8 flex-cc cursor bgi1 white ml10"
+          v-if="state.content.find(v=>{return typeof(v.key) == 'object'}) && state.content.find(v=>{return typeof(v.key) == 'object'})['key'].hasOwnProperty('add')"
           @click.stop="addRef.onVisable(state.addItem)">
           <i-ep-plus class="f12 fw" /><span class="f14 ml2">{{state.content.find(v=>{return typeof(v.key) == 'object'})['key'].add}}</span>
         </div>
@@ -42,12 +42,12 @@
 	  ...publicStore.$state,
     content: [
       { width: 'w70',   show: true, align: 'center', key: '*', name: '序号' },
-      { width: 'w50x3', show: true, align: 'left', key: 'id', name: 'ID', type: 'icon5' },  
+      { width: 'w50x3', show: true, align: 'left', key: 'id', name: 'ID', type: 'icon5' },
       { width: 'w50x5', show: true, align: 'left', key: 'name', name: '名称' },
       { width: 'w50x3', show: true, align: 'left', key: 'type', name: '类型', type: 'select', list: [], value: 'type', label: 'name' },
       { width: 'w50x5', show: true, align: 'left', key: 'instlPos', name: '安装位置' },
-      { width: 'w50x2', show: true, align: 'left', key: 'snr', name: '负荷类型', type: 'select', list: loadTypes, value: 'value', label: 'name' }, 
-      { width: 'w50x2', show: true, align: 'left', key: 'scale', name: '额定功率' }, 
+      { width: 'w50x2', show: true, align: 'left', key: 'snr', name: '负荷类型', type: 'select', list: loadTypes, value: 'value', label: 'name' },
+      { width: 'w50x2', show: true, align: 'left', key: 'scale', name: '额定功率' },
       { width: 'flex1', show: true, align: 'right', key: {}, name: '操作' },
     ],
     editFrom: [
@@ -101,9 +101,11 @@
     })
     setInit()
   }
-  
+
   const setInit = () => {
     state.addItem = {stationNum: publicStore.active.stationNum, parent_id: publicStore.active.id, bayNum: publicStore.active.bayNum, class: '0'}
+    console.log('publicStore._public.templates', publicStore._public.templates)
+    console.log('publicStore._public.qzlist', publicStore._public.qzlist)
     state.content.forEach(v => {
       if(v.key == 'model') v.list = publicStore._public.models
       if(v.key == 'type') v.list = publicStore._public.templates
@@ -147,8 +149,7 @@
     }
   }
 </script>
-  
+
 <style scoped lang="scss">
 
 </style>
-  

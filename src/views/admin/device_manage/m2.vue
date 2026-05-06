@@ -93,10 +93,14 @@
     addItem: {},
     imgs: [],
     authextra: ['sensorcontrol', 'sensoralarm', 'sensorset'],
+    model: 't_sensor',
   })
 
   onMounted(async() => {
-    await publicStore.init({path: '/sensor'}, state)
+    // await publicStore.init({path: '/sensor'}, state)
+
+    // const aa = publicStore.auth
+    // console.log('aa publicStore.auth', publicStore.auth)
     createScheduled("device_control", 5 * 1000, () => {
       getDevicesData()
     });
@@ -180,6 +184,7 @@
         Object.assign(device, redis_data)
         if(device.isAlarm) device.alarm = device.isAlarm>0? '1' : '0'
       })
+
     }
   }
 

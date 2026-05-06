@@ -23,7 +23,7 @@
         <div class="plr8"><el-input v-model="state.text" placeholder="请输入关键字" /></div>
       </div>
       <div class="flex1 overlay ww100 flex-ss warp">
-        <div class="p8 ww cursor" v-for="(item, index) in isNull(state.auths)? [] : state.auths.filter((a:any)=> !state.text || a.name.toLowerCase().indexOf(state.text.toLowerCase()) != -1)" 
+        <div class="p8 ww cursor" v-for="(item, index) in isNull(state.auths)? [] : state.auths.filter((a:any)=> !state.text || a.name.toLowerCase().indexOf(state.text.toLowerCase()) != -1)"
         :key="index" @click.stop="item.select = !item.select">
           <div class="flex-sc">
             <div :class="item.select?'bgi1 white':'bo-cb-1'" class="rad2 w13 h13 mr5 p2 flex-cc"><i-ep-select v-if="item.select" class="f12" /></div>
@@ -57,6 +57,8 @@
       item.select = false
       return item
     })
+    const aa = state.auths
+    debugger
   }
 
   const init = async(key) => {
@@ -115,10 +117,9 @@
     })
   }
 </script>
-  
+
 <style scoped lang="scss">
 .ww{
   width: 120px;
 }
 </style>
-  

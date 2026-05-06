@@ -8,7 +8,7 @@ router.beforeEach(async (to: any, from: any, next) => {
   // 仅允许字母、数字、斜杠和连字符
   if (!to.path.match(/^\/[a-zA-Z0-9\/\-_]*$/)) return next('/404')
   // 未匹配到任何路由
-  if(!checkRoute(window.location.href)) return window.location.replace(`${window.location.origin}/#/404`)  
+  if(!checkRoute(window.location.href)) return window.location.replace(`${window.location.origin}/#/404`)
   // 消毁echarts
   publicStore().rechart()
   // 初始化
@@ -34,7 +34,7 @@ router.beforeEach(async (to: any, from: any, next) => {
   //   })
   // }
   // 无需登录
-  if(!configStore().isLogin) return next() 
+  if(!configStore().isLogin) return next()
   // 登录地址
   let loginRoute = configStore().loginRoute? configStore().loginRoute : '/home'
   // 1.验证token
@@ -42,7 +42,7 @@ router.beforeEach(async (to: any, from: any, next) => {
     // 默认登录
     let params = getUrlParams()
     if(params != null){
-      // username: YWRtaW4= 
+      // username: YWRtaW4=
       // password: 23ZVR791D1D9348606965B2D829DB16693FC223ZVR
       // http://xxx/#/home?username=YWRtaW4=&password=23ZVR791D1D9348606965B2D829DB16693FC223ZVR&userid=1&link=https://www.baidu.com
       let query = {model: "t_user", args: `username='${params.username}' and password='${params.password}'`}
@@ -57,7 +57,7 @@ router.beforeEach(async (to: any, from: any, next) => {
     }
     if (to.meta.next)  return next()
     return next(loginRoute)
-  } 
+  }
   // 角色动态路由
   if (configStore().isRoute && configStore().isRoute != 'false' && configStore().routes.length == 0 && !to.meta.next) {
     let route_auth:any = {}
@@ -102,12 +102,13 @@ router.beforeEach(async (to: any, from: any, next) => {
 })
 
 router.afterEach(() => {
- 
+
 })
 
 // 动态路由重组
-export function filterRoutes(source:any, id:any, parentId:any, children:any, childDefault:any) {  
+export function filterRoutes(source:any, id:any, parentId:any, children:any, childDefault:any) {
   let cloneData = JSON.parse(JSON.stringify(source));
+  console.log('cloneDatacloneData', cloneData)
   return cloneData.filter((father:any)=>{
     father.meta = { isroute: father.isroute, icon: father.icon }
     delete father.isroute
@@ -120,7 +121,7 @@ export function filterRoutes(source:any, id:any, parentId:any, children:any, chi
 }
 
 // 检查动态路由
-export function checkRoute(url) {  
+export function checkRoute(url) {
   const paths = url.replace(/^https?:\/\//, '').split(/\/(.*)/, 2)
   if(!paths[1]) return true
   if(paths[1].length == 0) return true

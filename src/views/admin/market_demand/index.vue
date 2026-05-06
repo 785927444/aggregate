@@ -3,7 +3,7 @@
     <aa-title title="市场需求" class="mb10">
       <template #right-content>
         <div class="flex-ec cursor flex1">
-          <div class="ml15 mr10">用户</div>
+          <div class="ml15 mr10">邀约计划名称</div>
           <el-input class="w100x2" v-model.trim="state.username" placeholder="请输入" />
           <div class="ml15 mr10">等级</div>
           <div class="flex w50x2">

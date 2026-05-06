@@ -14,9 +14,9 @@
     <!-- 内容 -->
     <div class="layout-col white-rgba50 rad8 p15">
       <div class="table-col">
-        <el-tree 
-          :data="state.tree" 
-          :props="defaultProps" 
+        <el-tree
+          :data="state.tree"
+          :props="defaultProps"
           :default-expand-all="true"
           :node-key="state.key"
           ref="treeRef"
@@ -51,7 +51,7 @@
   const state = reactive({
 	  ...publicStore.$state,
     content: [
-      { width: 'flex1', show: true, align: 'start', key: 'name', name: '名称', type: 'icon2' }, 
+      { width: 'flex1', show: true, align: 'start', key: 'name', name: '名称', type: 'icon2' },
     ],
   })
 
@@ -155,8 +155,7 @@
     return childNodeIds
   }
 </script>
-  
+
 <style scoped lang="scss">
 
 </style>
-  

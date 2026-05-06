@@ -145,11 +145,11 @@
   let treeId = $ref('id')
   let tree = $ref([])
   let colorList = $ref([{name: '绿色', value: 'i21'},{name: '红色', value: 'i26'},{name: '黄色', value: 'i6'}])
-  let codeList = $ref([]) 
+  let codeList = $ref([])
   const defaultProps = {
     children: 'children',
     label: 'name',
-  }   
+  }
   const props = defineProps({
     state: {
       type: [Object, Array],
@@ -175,6 +175,7 @@
     }
     dataForm = {}
     dataForm = Object.assign({}, !proxy.isNull(props.state.editField)&&title == '修改'? props.state.editField : val)
+    console.log('dataFormdataFormdataFormdataForm', dataForm)
     // 规则
     ruleList = {}
     // 获取属性
@@ -182,7 +183,7 @@
   }
 
   // 获取属性
-  const editAttr = async(editFrom) => { 
+  const editAttr = async(editFrom) => {
     if(!editFrom) return false
     editFrom.forEach(item => {
       if(Array.isArray(item)){
@@ -193,9 +194,9 @@
           if(item.editshow != 'none' && (title == '创建' || item.editshow)){
             let rule = proxy.varObj(item.key, [
               {
-                required: true, 
-                message: item.type=='input'||item.type=='textarea'?'请输入':'请选择', 
-                trigger: item.type=='input'||item.type=='textarea'?['blur']:['blur','change'], 
+                required: true,
+                message: item.type=='input'||item.type=='textarea'?'请输入':'请选择',
+                trigger: item.type=='input'||item.type=='textarea'?['blur']:['blur','change'],
                 // pattern: item.pattern?item.pattern:''
               }])
             Object.assign(ruleList, rule)
@@ -235,7 +236,7 @@
       if(item) dataForm[key] = item[key]
     })
   }
-  
+
   const changeSelect = async(val, value) => {
     if(!val.relation) return
     emit('changeSelect', value)
@@ -358,8 +359,8 @@
       route.matched.forEach((v, i) => {
         if(v.name) msg += !msg? v.name : ` - ${v.name}`
       })
-    }  
-    msg += ` - ${mark}` 
+    }
+    msg += ` - ${mark}`
     msg += res=='1'?'成功':'失败'
     proxy.log([{name: mark, msg: msg, res: res, table: props.state.model, stationnum: configStore.distributId}])
   }
@@ -541,7 +542,7 @@
     }
     // 2. 去除首尾空格
     const trimmedValue = password.trim();
-    
+
     // 3. 长度验证
     if (trimmedValue.length <= 8) {
       res.msg = '密码长度必须大于8位'
@@ -551,7 +552,7 @@
     const hasLetter = /[a-zA-Z]/.test(trimmedValue);  // 包含字母
     const hasNumber = /\d/.test(trimmedValue);        // 包含数字
     const hasSymbol = /[~`!@#$%^&*()_+\-=\[\]{}|;':",.<>\/?\\]/.test(trimmedValue); // 包含符号
-    
+
     if (!hasLetter || !hasNumber || !hasSymbol) {
       res.msg = '密码必须同时包含字母、数字和特殊符号'
       res.status = false
