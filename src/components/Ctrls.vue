@@ -3,7 +3,7 @@
     <el-dialog modal-class="ctrlclass" v-model="state.isFalse" title="批量控制" :before-close="onVisable" :draggable="true" width="50%">
       <div class="layout-row" element-loading-background="rgba(0, 0, 0, 0.3)" v-loading="state.loading? true : false"  element-loading-text="遥控中...">
         <!-- 选择 -->
-        <div class="flex-col flex1 hh100 p15 ba1" style="height: auto; max-height: 400px;">
+        <div class="flex-col flex1 hh100 p15 bg-white" style="height: auto; max-height: 400px;">
           <!-- <div class="row bgi22 white">
             <div :style="{textAlign: v.align, paddingRight: v.name=='操作'?'10px': 'inherit'}" v-for="(v, i) in state.content" :key="i" v-show="v.show" :class="v.width">{{v.name}}</div>
           </div> -->
@@ -27,23 +27,23 @@
           </div>
         </div>
         <!-- 表单 -->
-        <div class="flex-col flex2 hh100 p15 ba1 ml10" style="height: auto; max-height: 400px;">
+        <div class="flex-col flex2 hh100 p15 bg-white ml10" style="height: auto; max-height: 400px;">
           <el-form ref="formRef" :model="state.form" :rules="state.ruleList" label-width="20%">
             <el-form-item :label="v.name" :prop="v.code" v-for="(v, i) in state.list" :key="i">
               <!-- 开关 -->
               <div v-if="v.type=='kg'" class="flex-sc">
                 <div class="w50 h30 lh30 tc f12 p2 rad2 cursor mr1" @click.stop="state.form[v.code]=vv.action_code"
-                :class="vv.action_code == state.form[v.code]?'white':'i1'" 
-                :style="{ background: vv.action_code == state.form[v.code]? 'linear-gradient(90deg, #6097FF 0%, rgba(38, 80, 158, 0.69) 97%)' : '#0a275b'}" 
+                :class="vv.action_code == state.form[v.code]?'white':'c8'" 
+                :style="{ background: vv.action_code == state.form[v.code]? 'linear-gradient(90deg, #6097FF 0%, rgba(38, 80, 158, 0.69) 97%)' : '#eee'}" 
                 v-for="(vv, ii) in v.action?v.action:[]" ::key="ii">{{ vv.action_name }}</div>
               </div>
               <!-- 计数 -->
               <div v-if="v.type=='count'" class="flex-sc rad3" style="background: linear-gradient(90deg, #6097FF 0%, rgba(38, 80, 158, 0.69) 97%);">
-                <div v-if="find(v.action, ['action_code', 'dec'])" class="w40 h30 lh30 tc i18 f12 p2 rad2 cursor" @click.stop="state.form[v.code]--"><i-ep-minus /></div>
-                <div class="fw i21 w80 h26 lh26 bg1 tc">
+                <div v-if="find(v.action, ['action_code', 'dec'])" class="w40 h30 lh30 tc white f12 p2 rad2 cursor" @click.stop="state.form[v.code]--"><i-ep-minus /></div>
+                <div class="fw i21 w80 h26 lh26 bg-white tc">
                   <el-input class="hh100 ww100" :input-style="{ textAlign: 'center' }" v-model="state.form[v.code]" placeholder="" />
                 </div>
-                <div v-if="find(v.action, ['action_code', 'add'])" class="w40 h30 lh30 tc i18 f12 p2 rad2 cursor" @click.stop="state.form[v.code]++"><i-ep-plus /></div>
+                <div v-if="find(v.action, ['action_code', 'add'])" class="w40 h30 lh30 tc white f12 p2 rad2 cursor" @click.stop="state.form[v.code]++"><i-ep-plus /></div>
               </div>
               <!-- 模式 -->
               <div v-if="v.type=='mode'" class="flex-sc w50x7 relative">
@@ -51,7 +51,7 @@
                 <div class="ww100 flex-bc absolute-cc">
                   <div class="flex-bc" @click.stop="state.form[v.code]=vv.action_code"
                       v-for="(vv, ii) in v.action?v.action:[]" ::key="ii">
-                        <span class="tc f12 cursor rad100 relative" :class="vv.action_code == state.form[v.code]?'bgzdy w14 h14 lh14':'bg-white w10 h10 lh10'" >
+                        <span class="tc f12 cursor rad100 relative bo-ca-1" :class="vv.action_code == state.form[v.code]?'bgzdy w14 h14 lh14':'bg-white w10 h10 lh10'" >
                           <span class="absolute-cc w100 mt22 i15">{{ vv.action_name }}</span>
                         </span>
                   </div>
@@ -305,7 +305,7 @@
 }
 .bgzdy{
   background: #60E7FF;
-  box-shadow: 0px 0px 4px 0px #74C7FA;
+  box-shadow: 0px 0px 4px 0px #6095f9;
 }
 .ctrlclass .el-input__wrapper {
   min-height: auto;

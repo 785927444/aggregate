@@ -1,643 +1,303 @@
 <template>
   <div class="layout-col plr20 pt5">
     <t1/>
-    <div class="layout-row">
-      <div class="flex3 hh100">
-        <div class="flex-sc flex1 ww100 hidden mb15 mt15">
-          <div class="chart-box-wrap">
-            <h3 class="card-title-home">
-              <span></span>总负荷曲线
-            </h3>
-            <div ref="loadChartRef" class="chart-box"></div>
-          </div>
-        </div>
-        <div class="flex-sc flex1 ww100 hidden mb15 mt15">
-          <div class="chart-box-wrap">
-            <h3 class="card-title-home">
-              <span></span>进行中的交易
-            </h3>
-            <div class="chart-box">
-              <List @handleClick="handleClick" :state="state"/>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="flex1 hh100">
-        <div class="flex-sc flex1 ww100 hidden mb15 mt15 ml15">
-          <div class="chart-box-wrap">
-            <h3 class="card-title-home card-title-home-r">
-              <span></span>用户负荷排名
-            </h3>
-            <div ref="rankChartRef" class="chart-box"></div>
-          </div>
-        </div>
-        <div class="flex-sc flex1 ww100 hidden mb15 mt15 ml15">
-          <div class="chart-box-wrap">
-            <h3 class="card-title-home card-title-home-r">
-              <span></span>市场需求
-            </h3>
-            <div class="chart-box">
-              <div class="info-card-wrap">
-                <div class="info-card">
-                  <!-- 头部标签栏 -->
-                  <div class="card-header">
-                    <span class="tab-label">交易中心</span>
-                    <span class="tab-value">JY45234165</span>
-                  </div>
-
-                  <!-- 内容区域 -->
-                  <div class="card-body">
-                    <div class="info-item">
-                      <span class="label">需求容量：</span>
-                      <span class="value">350000kW</span>
-                    </div>
-                    <div class="info-item">
-                      <span class="label">需求时段：</span>
-                      <span class="value">2026-02-01 10:00-12:00</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="ww100 flex1 flex-bc hidden mt15">
+      <c1 class="flex3 hh100 rad8 mr15" />
+      <c2 class="flex1 hh100 rad8" />
+    </div>
+    <div class="ww100 flex1 flex-bc hidden mt15">
+      <b1 class="flex3 hh100 rad8 mr15" />
+      <b2 class="flex1 hh100 rad8" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-const {proxy}: any = getCurrentInstance()
-const publicStore = proxy.publicStore()
-const configStore = proxy.configStore()
-import t1 from './t1'
-import * as echarts from 'echarts'
+  import t1 from './t1'
+  import c1 from './c1'
+  import c2 from './c2'
+  import b1 from './b1'
+  import b2 from './b2'
+  import scheduled from "@/utils/scheduled"
+  const { createScheduled } = scheduled()
+  const {proxy}: any = getCurrentInstance()
+  const publicStore = proxy.publicStore()
+  const configStore = proxy.configStore()
 
-let detailRef = $ref()
-let values = [
-  {name: '否', value: 0},
-  {name: '是', value: 1},
-]
-
-// 🔹 模拟数据
-const statsData = ref({
-  userCount: 12,
-  realTimeLoad: 274,
-  deviceCount: 198,
-  adjustCapacity: 198,
-  onlineRate: 95
-})
-
-const loadChartRef = ref(null)
-const rankChartRef = ref(null)
-let loadChart = null
-let rankChart = null
-let addRef = $ref()
-const state = reactive({
-  ...publicStore.$state,
-  content: [
-    {width: 'w50', show: true, align: 'left', key: '*', name: '序号'},
-    {width: 'w50x3', show: true, align: 'left', key: 'station_name', name: '名称', type: 'icon1'},
-    {
-      width: 'w50x3',
-      show: true,
-      align: 'left',
-      key: 'industry_type',
-      name: '行业类型',
-      type: 'select',
-      list: [],
-      value: 'id',
-      label: 'name'
-    },
-    {
-      width: 'w50x2',
-      show: true,
-      align: 'left',
-      key: 'day_out_response',
-      name: '日前响应',
-      type: 'select',
-      list: values,
-      label: 'name',
-      value: 'value'
-    },
-    {
-      width: 'w50x2',
-      show: true,
-      align: 'left',
-      key: 'day_in_response',
-      name: '日内响应',
-      type: 'select',
-      list: values,
-      label: 'name',
-      value: 'value'
-    },
-    {
-      width: 'w50x2',
-      show: true,
-      align: 'left',
-      key: 'yn_sign',
-      name: '是否签约',
-      type: 'select',
-      list: values,
-      label: 'name',
-      value: 'value'
-    },
-    {width: 'w50x2', show: true, align: 'left', key: 'devices', name: '设备数量'},
-    {width: 'w50x2', show: true, align: 'left', key: 'up_adjustable', name: '最大上调容量'},
-    {width: 'w50x2', show: true, align: 'left', key: 'down_adjustable', name: '最大下调容量'},
-    {width: 'flex1', show: true, align: 'right', key: {}, name: '操作'},
-  ],
-  editFrom: [
-    {required: true, editshow: 'none', name: '上级', key: 'parent_id', type: 'input'},
-    {required: true, editshow: true, name: '名称', key: 'station_name', type: 'input'},
-    // { required: false, editshow: true, name: '关联', key: 'node_id', type: 'select', list: [], label: 'name', value: 'id' },
-    {required: false, editshow: true, name: '排序', key: 'order', type: 'input'},
-  ],
-  addItem: {parent_id: '0'},
-})
-onMounted(async () => {
-  publicStore.init({path: '/station'}, state)
-  if (!configStore.distributId) configStore.distributId = '0'
-  await setInit()
-  getInit()
-})
-// 负荷曲线数据
-const loadChartData = {
-  xAxis: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
-  series: [
-    {name: '昨日负荷', data: [35, 50, 25, 40, 65, 55, 70]},
-    {name: '今日负荷', data: [30, 45, 20, 35, 60, 50, 75]}
+  // 模拟开始------------------Start
+  // 统计数据
+  const data = { userCount: 12, realTimeLoad: 274, deviceCount: 198, adjustCapacity: 198, onlineRate: 95 }
+  // 负荷曲线数据
+  const loadChartData = [
+    { name: '昨日负荷', data: [ ['00:00', 35, 1767590400000], ['04:00', 50, 1767604800000], ['08:00', 25, 1767619200000], ['12:00', 40, 1767633600000], ['16:00', 65, 1767648000000], ['20:00', 55, 1767662400000], ['24:00', 70, 1767676800000] ] },
+    { name: '今日负荷', data: [ ['00:00', 30, 1767590400000], ['04:00', 45, 1767604800000], ['08:00', 20, 1767619200000], ['12:00', 35, 1767633600000], ['16:00', 60, 1767648000000], ['20:00', 50, 1767662400000], ['24:00', 75, 1767676800000] ] }
   ]
-}
+  // 用户排名数据
+  const rankChartData = [
+    {station_name: '用户1', value: '475', rate: '45'},
+    {station_name: '用户2', value: '432', rate: '40'},
+    {station_name: '用户3', value: '398', rate: '40'},
+    {station_name: '用户4', value: '367', rate: '35'},
+    {station_name: '用户5', value: '350', rate: '30'},
+    {station_name: '用户6', value: '321', rate: '25'},
+    {station_name: '用户7', value: '302', rate: '20'},
+    {station_name: '用户8', value: '280', rate: '15'},
+  ]
+  // 模拟结束------------------End
 
-// 用户排名数据
-const rankChartData = {
-  xAxis: ['302kW', '321kW', '350kW', '367kW', '398kW', '432kW', '457kW'],
-  yAxis: ['用户7', '用户6', '用户5', '用户4', '用户3', '用户2', '用户1'],
-  data: [302, 321, 350, 367, 398, 432, 457],
-  colors: ['#8392A5', '#8392A5', '#8392A5', '#409EFF', '#E6A23C', '#E6A23C', '#F56C6C']
-}
+  const state = reactive({
+    ...publicStore.$state,
+    content: [
+      {width: 'w50', show: true, align: 'left', key: '*', name: '序号'},
+      {width: 'w50x3', show: true, align: 'left', key: 'station_name', name: '名称', type: 'icon1'},
+      {width: 'w50x2', show: true, align: 'left', key: 'devices', name: '设备数量'},
+      {width: 'w50x2', show: true, align: 'left', key: 'up_adjustable', name: '最大上调容量'},
+      {width: 'w50x2', show: true, align: 'left', key: 'down_adjustable', name: '最大下调容量'},
+      {width: 'flex1', show: true, align: 'right', key: {}, name: '操作'},
+    ],
+    code: 'Total_Power',
+  })
 
-// 交易表格数据
-const transactionData = ref([
-  {
-    id: 1,
-    tradeNo: 23245,
-    responseDate: '2025-10-11',
-    responseTime: '10:00-12:00',
-    demandType: '填谷',
-    applyCap: 43.00,
-    winCap: 43.00,
-    status: '带出错(市场)'
-  },
-  {
-    id: 2,
-    tradeNo: 23245,
-    responseDate: '2025-10-11',
-    responseTime: '10:00-12:00',
-    demandType: '填谷',
-    applyCap: 43.00,
-    winCap: 43.00,
-    status: '待执行'
-  },
-  {
-    id: 3,
-    tradeNo: 23245,
-    responseDate: '2025-10-11',
-    responseTime: '10:00-12:00',
-    demandType: '填谷',
-    applyCap: 43.00,
-    winCap: 43.00,
-    status: '正在执行'
-  },
-  {
-    id: 4,
-    tradeNo: 23245,
-    responseDate: '2025-10-11',
-    responseTime: '10:00-12:00',
-    demandType: '填谷',
-    applyCap: 43.00,
-    winCap: 43.00,
-    status: '执行完成'
-  },
-  {
-    id: 5,
-    tradeNo: 23245,
-    responseDate: '2025-10-11',
-    responseTime: '10:00-12:00',
-    demandType: '填谷',
-    applyCap: 43.00,
-    winCap: 43.00,
-    status: '执行完成'
-  },
-  {
-    id: 6,
-    tradeNo: 23245,
-    responseDate: '2025-10-11',
-    responseTime: '10:00-12:00',
-    demandType: '填谷',
-    applyCap: 43.00,
-    winCap: 43.00,
-    status: '执行完成'
+  onMounted(async () => {
+    // 初始化站点
+    if (!configStore.distributId) configStore.distributId = '0'
+    // 获取数据
+    getInit()
+    createScheduled("home_scheduled", 10 * 1000, () => { init() })
+  })
+
+  // 切换站点（用户）
+  watch(() => configStore.distributId, async(val, old) => {
+    await nextTick()
+    if(proxy.isNull(val)) return
+    getInit()
+  }, {immediate: false, deep: true})
+
+  const getInit = async () => {
+    // 站点（用户）
+    let query1 = {model: 't_station', args: `parent_id='0'`}
+    if(configStore.distributId != '0') query1.args += `and id='${configStore.distributId}'`
+    // 设备
+    let query2 = {model: 't_sensor', args: `class='0'`}
+    if(configStore.distributId != '0') query2.args += `and stationNum='${configStore.distributId}'`
+    // 请求
+    let params = {Api1: query1, Api2: query2}
+    let res = await publicStore.http(params)
+    let stations = proxy.isNull(res.Api1) ? [] : res.Api1
+    publicStore._public.stations = [...stations]
+    let devices = proxy.isNull(res.Api2) ? [] : res.Api2
+    publicStore._public.devices = [...devices]
+    // 模拟数据 注意需要注释
+    publicStore.data = {...data}
+    publicStore._public.loadChartData = [...loadChartData]
+    publicStore._public.rankChartData = [...rankChartData]
+    // 组装动态请求
+    getQuery()
+    // 获取动态数据
+    init()
   }
-])
 
-// 市场需求数据
-const demandData = ref([
-  {id: 'JY45234165', capacity: 350000, timePeriod: '2026-02-01 10:00-12:00'},
-  {id: 'JY123452565', capacity: 350000, timePeriod: '2026-02-01 10:00-12:00'},
-  {id: 'JY123452565', capacity: 350000, timePeriod: '2026-02-01 10:00-12:00'}
-])
-
-// 🔹 初始化图表
-const initCharts = () => {
-  // 总负荷曲线
-  if (loadChartRef.value) {
-    loadChart = echarts.init(loadChartRef.value)
-    loadChart.setOption({
-      tooltip: {trigger: 'axis'},
-      legend: {data: ['昨日负荷', '今日负荷'], top: 0},
-      xAxis: {type: 'category', data: loadChartData.xAxis},
-      yAxis: {type: 'value', name: 'kW'},
-      series: [
-        {name: '昨日负荷', type: 'line', data: loadChartData.series[0].data, lineStyle: {color: '#909399'}},
-        {name: '今日负荷', type: 'line', data: loadChartData.series[1].data, lineStyle: {color: '#409EFF'}}
-      ]
+  // 组装动态请求
+  const getQuery = () => {
+    let queryRedis = {model: "redis"}
+    let ids = []
+    queryRedis.key = publicStore._public.devices.map((a) => {
+      // ids
+      let id = ids.find(b=>b == a.id)
+      if(!id) ids.push(a.id)
+      // redis
+      return "mo:Hash:sensor:" + a.id
     })
+    state.ids = ids
+    state.queryRedis = queryRedis
   }
 
-  // 用户负荷排名
-  if (rankChartRef.value) {
-    rankChart = echarts.init(rankChartRef.value)
-    rankChart.setOption({
-      tooltip: {trigger: 'axis', axisPointer: {type: 'shadow'}},
-      xAxis: {type: 'value', boundaryGap: [0, 0.01]},
-      yAxis: {type: 'category', data: rankChartData.yAxis},
-      series: [
-        {
-          name: '负荷',
-          type: 'bar',
-          data: rankChartData.data,
-          itemStyle: {
-            color: (params) => rankChartData.colors[params.dataIndex]
-          }
+  // 获取动态数据
+  const init = async (key) => {
+    // 实时数据
+    getRedis()
+    // 总负荷曲线
+    getLoadChartData()
+    // 进行中的交易
+    getTransactionData()
+    // 市场需求
+    getDemandData()
+  }
+
+  // 实时数据
+  const getRedis = async() => {
+    if (!proxy.isNull(publicStore._public.devices)){
+      let params = {getApi: state.queryRedis}
+      let res = await publicStore.http(params)
+      // 平台统计
+      let homeInfo = {}
+      // 平台设备
+      let homeDevices = []
+      // 按站统计
+      let homeStations = JSON.parse(JSON.stringify(publicStore._public.stations))
+      publicStore._public.devices.forEach(v => {
+        // 重置实时
+        let device =  Object.assign({}, v)
+        let redis_exist = res.find(a=>a.id == v.id)
+        let redis_data = redis_exist? redis_exist : {}
+        Object.assign(device, redis_data)
+        // 特殊处理告警
+        if(device.isAlarm) device.alarm = device.isAlarm>0? '1' : '0'
+        // 站点计算
+   			let station = homeStations.find(a=>a.id == v.stationNum)
+				if(station) setData(station, redis_data)
+        // 数据计算
+        setData(homeInfo, redis_data)
+        // 获取设备
+        homeDevices.push(device)
+      })
+      publicStore._public.homeStations = homeStations
+      publicStore._public.homeInfo = {...homeInfo}
+      publicStore._public.homeDevices = [...homeDevices]
+      console.log("publicStore._public.homeStations---", publicStore._public.homeStations)
+      console.log("publicStore._public.homeInfo---", publicStore._public.homeInfo)
+      console.log("publicStore._public.homeDevices---", publicStore._public.homeDevices)
+    } else {
+      publicStore._public.homeStations = []
+      publicStore._public.homeInfo = {}
+      publicStore._public.homeDevices = []
+    }
+    // 统计
+    getCount()
+    // 排名
+    getRank()
+  }
+
+  // 数据计算
+  const setData = (info, data) => {
+    info['sum'] = !info['sum'] ? 1 : info['sum'] + 1
+    Object.keys(data).forEach((key)=>{
+      if (key.indexOf('_tc')==-1 && (typeof data[key] === 'number' || (typeof data[key] === 'string' && data[key].trim() !== '' && !isNaN(Number(data[key].trim()))))) {
+        if(key == 'timestamp'){
+          // 最大
+          if(!info[key] || info[key] && info[key]<data[key]) info[key] = data[key]
+        }else{
+          // 累计
+          info[key] = !info[key] ? Number(data[key]) : Number(info[key]) + Number(data[key])
         }
-      ]
+        // 告警
+        if(key == 'isAlarm') {
+          if(data[key] > 0) info['alarm1'] = !info['alarm1'] ? 1 : info['alarm1'] + 1
+          if(data[key] == 0) info['alarm0'] = !info['alarm0'] ? 1 : info['alarm0'] + 1
+        }
+        // 工况 
+        if(key == 'offline') {
+          info[key+data[key]] = !info[key+data[key]] ? 1 : info[key+data[key]] + 1
+        }
+        // 逆变器\充电桩\空调
+        if(key == 'pv_inverter_status' || key == 'Operation_State' || key == '2022' || key == 'hvac_on_off_status' || key == 'loadStatus' || key == 'fanStatus') {
+          info[key+data[key]] = !info[key+data[key]] ? 1 : info[key+data[key]] + 1
+        }
+      } 
     })
   }
-}
 
-// 🔹 自适应窗口
-const resizeCharts = () => {
-  loadChart?.resize()
-  rankChart?.resize()
-}
-const handleClick = async (remark, val) => {
-  if (remark == 'add' || remark == 'upd') {
-    addRef.onVisable(val)
+  // 统计
+  const getCount = () => {
+    let userCount = 0
+    let deviceCount = 0
+    let realTimeLoad = 0
+    let adjustCapacity = 0
+    let onlineRate = 0
+    // 站点 / 用户数
+    userCount = !proxy.isNull(publicStore._public.stations)?publicStore._public.stations.length:0
+    if(!proxy.isNull(publicStore._public.homeDevices)){
+      // 设备总数
+      deviceCount = publicStore._public.homeDevices.length
+      // 实时总负荷
+      if(publicStore._public.homeDevices.realTimeLoad){
+        realTimeLoad = Math.floor((publicStore._public.homeDevices.realTimeLoad*100))/100
+      }
+      // 当前可调节容量
+      if(publicStore._public.homeDevices.adjustCapacity){
+        adjustCapacity = Math.floor((publicStore._public.homeDevices.adjustCapacity*100))/100
+      }
+      // 设备在线率
+      if(publicStore._public.homeDevices.offline0){
+        onlineRate = Math.floor(((publicStore._public.homeDevices.offline0/publicStore._public.homeDevices.length)*10000))/100
+      }
+    }
+    publicStore.data.userCount = userCount
+    publicStore.data.deviceCount = deviceCount
+    publicStore.data.realTimeLoad = realTimeLoad
+    publicStore.data.adjustCapacity = adjustCapacity
+    publicStore.data.onlineRate = onlineRate
   }
-  if (remark == 'del') {
-    addRef.del(val)
-  }
-  if (remark == 'detail') {
-    detailRef.onVisable(val)
-  }
-  if (remark == 'active') {
-    publicStore.active = val
-  }
-}
-const setInit = async () => {
-  // 获取行业
-  let query1 = {model: 't_industry', args: `parent_id='0'`}
-  publicStore.http({Api: query1}).then(res => {
-    state.industrys = proxy.isNull(res) ? [] : res.sort((a, b) => a.order - b.order)
-    state.content.forEach(v => {
-      if (v.key == 'industry_type') v.list = [...state.industrys]
+
+  // 排名
+  const getRank = () => {
+    // 模拟100 实际需改成0
+    let totle = publicStore._public.homeInfo[state.code]?publicStore._public.homeInfo[state.code]:100
+    let rankChartData = publicStore._public.homeStations.map(v => {
+      // temp模拟100内 实际需改成0
+      let temp = Math.floor(Math.random() * 100) + 1
+      v.value = v[state.code]?v[state.code]:temp
+      v.rate = Math.floor(((v.load / totle)*10000))/100
+      return v
     })
-  })
-  // 获取节点
-  // let query2 = {model: 't_sensor', args: `class='3'`}
-  // publicStore.http({Api: query2}).then(res=>{
-  //   state.nodes = proxy.isNull(res)? [] : res
-  //   state.nodes = state.nodes.map(node => ({ ...node, id: String(node.id) }))
-  //   state.editFrom.forEach(v => {
-  //     if(v.key == 'node_id') v.list = [...state.nodes]
-  //   })
-  // })
-}
-
-const getInit = async () => {
-  let list = []
-  if (!proxy.isNull(configStore.stations)) {
-    list = configStore.stations
-  } else {
-    state.query = {model: state.model, args: `parent_id='0'`}
-    state.params = {Api: state.query}
-    let res = await publicStore.http(state.params)
-    console.log('resresres', res)
-    list = proxy.isNull(res) ? [] : res.sort((a, b) => a.order - b.order)
+    publicStore._public.rankChartData = rankChartData.sort((a, b) => b['value'] - a['value'])
   }
-  state.empty = proxy.isNull(list) ? true : false
-  state.list = list
-  publicStore._public.list = state.list
-  configStore.stations = state.list
-  getNewList()
-}
-const init = async (key) => {
-  state.query = {model: state.model, args: `parent_id='0'`}
-  state.params = {Api: state.query}
-  let res = await publicStore.http(state.params)
-  let list = proxy.isNull(res) ? [] : res.sort((a, b) => a.order - b.order)
-  console.log('resresres', list)
-  state.empty = proxy.isNull(list) ? true : false
-  state.list = list
-  publicStore._public.list = state.list
-  configStore.stations = state.list
-  getNewList()
-}
 
-const getNewList = () => {
-  state.list.forEach(v => {
-    v.area = v.province_name && v.city_name ? `${v.province_name}-${v.city_name}` : ''
-    let query = {model: 't_sensor', args: `stationNum='${v.id}' and class='0'`, field: `COUNT(*)`}
-    publicStore.http({Api: query}).then(ress => {
-      v.devices = proxy.isNull(ress) ? 0 : ress[0]['COUNT(*)']
+  // 总负荷曲线
+  const getLoadChartData = async() => {
+    // 获取当前时间
+    const now = new Date('2025-08-22')
+    // 当日开始时间（00:00:00.000）
+    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime()
+    // 当日最后时间（23:59:59.999）
+    const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999).getTime()
+    // 昨日开始时间（昨日 00:00:00.000）
+    const startOfYesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1).getTime()
+    // 昨日最后时间（昨日 23:59:59.999）
+    const endOfYesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 23, 59, 59, 999).getTime()
+    // console.log("startOfDay---", startOfDay)
+    // console.log("endOfDay---", endOfDay)
+    // console.log("startOfYesterday---", startOfYesterday)
+    // console.log("endOfYesterday---", endOfYesterday)
+    // 请求
+    let query = {model: 't_sensor_measure_float_station', args: `code='${state.code}' and date>'${startOfYesterday}' and date<'${endOfDay}'`}
+    if(configStore.distributId != '0') query.args += `and station_num='${configStore.distributId}'`
+    let params = {Api: query}
+    let res = await publicStore.http(params)
+    let todayData = res.filter(a=>{ return a>= startOfDay})
+    let yesterday = res.filter(a=>{ return a< startOfDay})
+    let loadChartData = [{ name: '昨日负荷', data: [] }, { name: '今日负荷', data: [] }] 
+    res.forEach(v => {
+      let time = proxy.parseTime(v.date, '{h}:{i}:{s}')
+      let item = [time, v.value, v.date]
+      if(v.date < startOfDay){
+        item[2] = Number(item[2]) + 24*60*60*1000 + ''
+        loadChartData[0].data.push(item)
+      }else{
+        loadChartData[1].data.push(item)
+      }
     })
-  })
-}
-onMounted(() => {
-  initCharts() // 取消注释，初始化图表
-  window.addEventListener('resize', resizeCharts)
-})
+    publicStore._public.loadChartData = [...loadChartData]
+  }
 
-onUnmounted(() => {
-  window.removeEventListener('resize', resizeCharts)
-  loadChart?.dispose()
-  rankChart?.dispose()
-})
+  // 进行中的交易
+  const getTransactionData = async() => {
+    let status = '2'
+    let query = {model: 't_trade_demand', args: `status='${status}'`}
+    if(configStore.distributId != '0') query.args += `and station_num='${configStore.distributId}'`
+    let res = await publicStore.http({Api: query})
+    publicStore._public.transactionData = proxy.isNull(res)? [] : res
+  }
+
+  // 市场需求
+  const getDemandData = async() => {
+    let query = {model: 't_trade_demand'}
+    // if(configStore.distributId != '0') query.args += `and station_num='${configStore.distributId}'`
+    let res = await publicStore.http({Api: query})
+    publicStore._public.demandData = proxy.isNull(res)? [] : res
+  }
 </script>
 
-<style scoped>
-.dashboard-container {
-  padding: 20px;
-  background: #f5f7fa;
-  min-height: 100vh;
-}
+<style scoped lang="scss">
 
-.chart-box-wrap {
-  width: 100%;
-  border-radius: 8px;
-  background-color: #fff;
-}
-
-.card-title-home {
-  width: 98%;
-  margin: 0 auto;
-  padding: 5px 0px;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.card-title-home-r{
-  width: 85%;
-  margin: 0 0 0 15px;
-}
-
-.card-title-home span {
-  display: block;
-  margin-right: 6px;
-  float: left;
-  width: 4px;
-  height: 18px;
-  border-radius: 133px;
-  background: linear-gradient(0deg, #1B76FF 0%, rgba(77, 131, 238, 0) 99%);
-
-}
-
-.chart-box {
-  width: 100%;
-  height: 293px; /* 可根据需求调整高度 */
-}
-
-.stats-row {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 0px;
-  flex-wrap: wrap;
-  height: 100px;
-}
-
-.stat-col {
-  flex: 1;
-  min-width: 160px;
-}
-
-.stat-card {
-  background: #fff;
-  border-radius: 8px;
-  padding: 15px;
-  display: flex;
-  align-items: center;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-}
-
-/* 图标统一尺寸 */
-.stat-icon {
-  width: 40px;
-  height: 40px;
-  margin-right: 20px;
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-
-.user-icon {
-  background-image: url(../../../assets/images/jh/user.png);
-}
-
-.load-icon {
-  background-image: url(../../../assets/images/jh/load.png);
-}
-
-.device-icon {
-  background-image: url(../../../assets/images/jh/device.png);
-}
-
-.capacity-icon {
-  background-image: url(../../../assets/images/jh/capacity.png);
-}
-
-.online-icon {
-  background-image: url(../../../assets/images/jh/online.png);
-}
-
-.stat-info {
-  flex: 1;
-}
-
-.stat-title {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 4px;
-}
-
-.stat-value {
-  font-size: 20px;
-  font-weight: bold;
-  color: #333;
-}
-
-.stat-suffix {
-  font-size: 12px;
-  font-weight: normal;
-  color: #999;
-  margin-left: 2px;
-}
-
-/* 图表与表格布局 */
-.content-row {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-}
-
-.chart-col {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  padding: 15px;
-}
-
-.chart-col.large {
-  flex: 2;
-  min-width: 400px;
-}
-
-.chart-col.medium {
-  flex: 1;
-  min-width: 300px;
-}
-
-.table-col {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  padding: 15px;
-}
-
-.table-col.large {
-  flex: 2;
-  min-width: 500px;
-}
-
-.table-col.medium {
-  flex: 1;
-  min-width: 300px;
-}
-
-.chart-title, .card-title {
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 15px;
-  color: #333;
-}
-
-.chart-container {
-  width: 100%;
-  height: 250px;
-}
-
-.data-card {
-  height: 100%;
-}
-
-.more {
-  font-size: 14px;
-  color: #409EFF;
-  float: right;
-  cursor: pointer;
-}
-
-.demand-list {
-  margin-top: 10px;
-}
-
-.demand-item {
-  padding: 10px 0;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.demand-item:last-child {
-  border-bottom: none;
-}
-
-.demand-id {
-  font-weight: bold;
-  margin-bottom: 4px;
-}
-
-.demand-cap, .demand-time {
-  font-size: 14px;
-  color: #666;
-}
-
-.info-card-wrap {
-  width: 85%;
-  margin: 0 0 0 15px;
-}
-
-.info-card {
-  /* 自动布局子元素 */
-  height: 106px;
-  background: url(../../../assets/images/home/bg-home-r2.png) left top no-repeat;
-  background-size:  100% auto;
-  padding: 8px 16px;
-}
-
-/* 头部样式 */
-.card-header {
-  display: flex;
-  align-items: center;
-  padding: 8px 16px;
-}
-
-.tab-label {
-  font-size: 14px;
-  color: #6b7280; /* 灰色文字 */
-  font-weight: 500;
-}
-
-.tab-value {
-  font-size: 14px;
-  color: #1f2937; /* 深灰色文字 */
-  font-weight: 600;
-  margin-left: 4px;
-}
-
-/* 内容区域样式 */
-.card-body {
-  padding: 12px 16px;
-}
-
-.info-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 8px; /* 项目之间的间距 */
-}
-
-.info-item:last-child {
-  margin-bottom: 0;
-}
-
-.label {
-  font-size: 14px;
-  color: #6b7280;
-}
-
-.value {
-  font-size: 14px;
-  color: #1f2937;
-  font-weight: 500;
-}
 </style>

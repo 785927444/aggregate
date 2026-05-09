@@ -17,34 +17,42 @@
         <div class="layout-row overlay warp p8 bg-white rad8 c3">
             <div class="p8 ww20" v-for="(v, i) in !isNull(publicStore._public.homeDevices)?
             // state.active=='All'&&state.bay!='All'&&!state.airName?publicStore._public.homeDevices.filter(a =>a.bayNum==state.bay) :
-            // state.active!='All'&&state.bay!='All'&&!state.airName?publicStore._public.homeDevices.filter(a =>a.bayNum==state.bay&&a['2022']==state.active) :
+            // state.active!='All'&&state.bay!='All'&&!state.airName?publicStore._public.homeDevices.filter(a =>a.bayNum==state.bay&&a['hvac_on_off_status']==state.active) :
             // state.active=='All'&&state.bay!='All'&&state.airName?publicStore._public.homeDevices.filter(a =>a.bayNum==state.bay&&a.name.indexOf(state.airName)!=-1) :
-            state.active!='All'&&state.bay=='All'&&!state.airName?publicStore._public.homeDevices.filter(a =>a['2022']==state.active) : 
+            state.active!='All'&&state.bay=='All'&&!state.airName?publicStore._public.homeDevices.filter(a =>a['hvac_on_off_status']==state.active) : 
             state.active=='All'&&state.bay=='All'&&state.airName?publicStore._public.homeDevices.filter(a => a.name.indexOf(state.airName)!=-1) :
-            state.active!='All'&&state.bay=='All'&&state.airName?publicStore._public.homeDevices.filter(a =>a['2022']==state.active&&a.name.indexOf(state.airName)!=-1) :
+            state.active!='All'&&state.bay=='All'&&state.airName?publicStore._public.homeDevices.filter(a =>a['hvac_on_off_status']==state.active&&a.name.indexOf(state.airName)!=-1) :
             state.active=='All'&&state.bay=='All'&&!state.airName?publicStore._public.homeDevices : [] : []" :key="i">
                 <div class="ww100 flex-col rad6 i15 bs2">
-                    <div class="flex-bc ww100 p12 fw">
+                    <div class="flex-bs ww100 p12 fw">
                         <span class="flex1 fw">{{v.name}}</span>
-                        <span v-if="v.offline&&v.offline=='0'" :class="find(state.actives, ['value', v['2022']], 'color')?find(state.actives, ['value', v['2022']], 'color'):'ca'">
-                          · {{find(state.actives, ['value', v['2022']], 'name')?find(state.actives, ['value', v['2022']], 'name'):'暂无'}}
-                        </span>
-                        <span class="ca" v-else>· 离线</span>
+                        <div class="flex-col-ec">
+                            <div class="flex-sc">
+                                <span v-if="v.offline&&v.offline=='0'" class="i11">· 在线</span>
+                                <span v-else-if="v.offline&&v.offline=='1'"  class="ca">· 离线</span>
+                                <span class="ca" v-else>· 故障</span>
+                            </div>
+                            <div class="flex-sc">
+                                <span v-if="v.hvac_on_off_status" :class="find(state.actives, ['value', v['hvac_on_off_status']], 'color')?find(state.actives, ['value', v['hvac_on_off_status']], 'color'):'ca'">
+                                    · {{find(state.actives, ['value', v['hvac_on_off_status']], 'name')?find(state.actives, ['value', v['hvac_on_off_status']], 'name'):'暂无'}}
+                                </span>
+                            </div>
+                        </div>
                     </div>
                     <div class="flex-bc ww100 mb15 bodt-i21-1 bodb-i21-1">
                         <div class="flex2 flex-cc relative">
                             <img class="ww100 p5" src="@/assets/images/air1.png" />
                             <div class="flex-col-cc absolute-cc">
                                 <img class="w15" src="@/assets/imgs/cons2.png" />
-                                <span class="f12 mt2"><span class="f18">{{v["Temperature"]?Math.floor(Number(v["Temperature"]*10))/10 + '℃':'--'}}</span></span>
+                                <span class="f12 mt2"><span class="f18">{{v["2024"]?Math.floor(Number(v["2024"]*10))/10 + '℃':'--'}}</span></span>
                             </div>
                         </div>
                         <div class="flex3 flex-col-cs p12 bodl-i21-1">
                             <div class="flex-sc ww100">
                                 <span class="i21 w42">风速</span>
-                                <span class="white flex1">
+                                <span class="c8 flex1">
                                    <span v-if="v['2025']">
-                                      <span v-if="v['2025'] == '4'">自动</span>
+                                      <span v-if="v['2025'] == '1'">自动</span>
                                       <span v-if="v['2025'] == '2'" class="flex-sc">
                                         <img class="w15 mr5" src="@/assets/imgs/cons3.png" />
                                       </span>
@@ -63,7 +71,7 @@
                             </div>
                             <div class="flex-sc ww100 mt12">
                                 <span class="i21 w42">模式</span>
-                                <span class="white flex1">
+                                <span class="c8 flex1">
                                     <span v-if="v['2023']">
                                         <span v-if="v['2023'] == '1'">自动</span>
                                         <span v-if="v['2023'] == '2'">制冷</span>
@@ -80,19 +88,27 @@
                             </div> -->
                             <div class="flex-sc ww100 mt12">
                                 <span class="i21 w42">湿度</span>
-                                <span class="white flex1">{{v.Humility?(Math.round(v.Humility*100)/100)+' %':'--'}}</span>
+                                <span class="c8 flex1">{{v.Humility?(Math.round(v.Humility*1000)/1000)+' %':'--'}}</span>
                             </div>
                         </div>
                     </div>
                     <div class="flex-col ww100 pl12 pb12">
                         <div class="flex-sc ww100 pb10">
+                            <span class="i21">实时功率</span>
+                            <span class="pl10 ww40">{{v.Total_Power?Math.round(v.Total_Power*1000)/1000:'0'}} kW</span>
+                        </div>
+                        <div class="flex-sc ww100 pb10">
+                            <span class="i21">额定功率</span>
+                            <span class="pl10 ww40">{{v.scale?Math.round(v.scale*1000)/1000:'0'}} kW</span>
+                        </div>
+                        <!-- <div class="flex-sc ww100 pb10">
                             <span class="i21">累计用电</span>
-                            <span class="pl10 ww40">{{v.Total_Electricity?Math.round(v.Total_Electricity*100)/100:'0'}} kWh</span>
+                            <span class="pl10 ww40">{{v.Total_Electricity?Math.round(v.Total_Electricity*1000)/1000:'0'}} kWh</span>
                         </div>
                         <div class="flex-sc ww100 pb10">
                             <span class="i21">用电时长</span>
-                            <span class="pl10 ww40">{{v.Total_Duration?Math.round(v.Total_Duration*100)/100:'0'}} 小时</span>
-                        </div>
+                            <span class="pl10 ww40">{{v.Total_Duration?Math.round(v.Total_Duration*1000)/1000:'0'}} 小时</span>
+                        </div> -->
                         <div class="flex-sc ww100">
                             <span class="i21">采集时间</span>
                             <span class="pl10">{{v.timestamp?proxy.parseTime(v.timestamp):'暂无'}}</span>
@@ -100,7 +116,7 @@
                     </div>
                     <div class="flex1 flex-cc pb12">
                         <div class="flex1 flex-cc">
-                            <div class="flex-sc bgi1 white rad3 cursor ptb5 pl5 pr12" @click.stop="toPath('/detail', {id: v.id, stationNum: v.stationNum, type: v.type, code: 'Total_Power', code2: 'Signal'})">
+                            <div class="flex-sc bgi1 white rad3 cursor ptb5 pl5 pr12" @click.stop="toPath('/detail', {id: v.id, stationNum: v.stationNum, type: v.type, code: 'Total_Power', code2: 'Total_Electricity'})">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="none" version="1.1" width="14.933328628540039" height="13.25653076171875" viewBox="0 0 14.933328628540039 13.25653076171875">
                                     <g>
                                         <path d="M12.5216,9.71945L14.9333,6.18986L13.2277,6.18986C13.0005,2.736,10.1323,0,6.6208,0C2.96,0,0,2.96747,0,6.62933C0,10.288,2.96747,13.2565,6.62827,13.2565C8.26986,13.2565,9.76853,12.656,10.9269,11.6661L10.0405,10.5248C9.12853,11.3227,7.936,11.8123,6.62827,11.8123C3.76427,11.8123,1.4432,9.49012,1.4432,6.62933C1.4432,3.76427,3.76534,1.44319,6.62827,1.44319C9.34294,1.44319,11.5605,3.53278,11.7835,6.18986L10.1099,6.18986L12.5216,9.71945L12.5216,9.71945Z" fill="#EFF5FF" fill-opacity="1"/>

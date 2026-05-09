@@ -9,17 +9,17 @@
                 <!-- 开关 -->
                 <div v-if="v.type=='kg'" class="flex-sc">
                   <div class="w50 h30 lh30 tc f12 p2 rad2 cursor mr1" @click.stop="state.form[v.code]=vv.action_code"
-                  :class="vv.action_code == state.form[v.code]?'white':'i1'" 
-                  :style="{ background: vv.action_code == state.form[v.code]? 'linear-gradient(90deg, #6097FF 0%, rgba(38, 80, 158, 0.69) 97%)' : '#0a275b'}" 
+                  :class="vv.action_code == state.form[v.code]?'white':'c8'" 
+                  :style="{ background: vv.action_code == state.form[v.code]? 'linear-gradient(90deg, #6097FF 0%, rgba(38, 80, 158, 0.69) 97%)' : '#ffffff'}" 
                   v-for="(vv, ii) in v.action?v.action:[]" ::key="ii">{{ vv.action_name }}</div>
                 </div>
                 <!-- 计数 -->
                 <div v-if="v.type=='count'" class="flex-sc rad3" style="background: linear-gradient(90deg, #6097FF 0%, rgba(38, 80, 158, 0.69) 97%);">
-                  <div v-if="find(v.action, ['action_code', 'dec'])" class="w40 h30 lh30 tc i18 f12 p2 rad2 cursor" @click.stop="state.form[v.code]--"><i-ep-minus /></div>
-                    <div class="fw i21 w80 h26 lh26 bg1 tc">
+                  <div v-if="find(v.action, ['action_code', 'dec'])" class="w40 h30 lh30 tc white f12 p2 rad2 cursor" @click.stop="state.form[v.code]--"><i-ep-minus /></div>
+                    <div class="fw i21 w80 h26 lh26 bg-white tc">
                       <el-input class="hh100 ww100" :input-style="{ textAlign: 'center' }" v-model="state.form[v.code]" placeholder="" />
                     </div>              
-                  <div v-if="find(v.action, ['action_code', 'add'])" class="w40 h30 lh30 tc i18 f12 p2 rad2 cursor" @click.stop="state.form[v.code]++"><i-ep-plus /></div>
+                  <div v-if="find(v.action, ['action_code', 'add'])" class="w40 h30 lh30 tc white f12 p2 rad2 cursor" @click.stop="state.form[v.code]++"><i-ep-plus /></div>
                 </div>
                 <!-- 模式 -->
                 <!-- <div v-if="v.type=='mode'&&state.active.type=='airconditioner'" class="flex-sc w50x7 relative">
@@ -38,7 +38,7 @@
                   <!-- <div class="ww100 h4" style="background: rgba(83, 100, 124, 0.2);"></div> -->
                   <div class="ww100 flex-sc absolute-cc">
                     <div class="flex-bc cursor mr20" @click.stop="state.form[v.code]=vv.action_code" v-for="(vv, ii) in v.action?v.action:[]" ::key="ii">
-                      <span class="tc f12 rad100 relative mr10" :class="vv.action_code == state.form[v.code]?'bgzdy w14 h14 lh14':'bg-white w12 h12 lh12 m2'" ></span>
+                      <span class="tc f12 rad100 relative mr10 bo-ca-1" :class="vv.action_code == state.form[v.code]?'bgzdy w14 h14 lh14':'bg-white w12 h12 lh12 m2'" ></span>
                       <span class="i15">{{ vv.action_name }}</span>
                     </div>
                   </div>
@@ -209,7 +209,7 @@
   white-space: pre-line;
 }
 .bgzdy{
-  background: #60E7FF;
+  background: #6095f9;
   box-shadow: 0px 0px 4px 0px #74C7FA;
 }
 .ctrlclass .el-input__wrapper {

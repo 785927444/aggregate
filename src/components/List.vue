@@ -8,7 +8,7 @@
           <div v-show="v.show" :class="v.width" :style="{textAlign: v.align}" v-for="(v, i) in state.content" :key="i">
             <span v-if="typeof(v.key) == 'object'" class="cursor mlr5" :class="kk=='add'|| state.auth[kk] == false?'none':kk=='del'?'i8':'i1'" v-for="(vv, kk, ii) in v.key" :key="ii" @click.stop="emit('handleClick', kk, item)">{{vv}}</span>
             <span v-else-if="v.key=='*'">{{(state.page-1)*state.limit + index+1}}</span>
-            <span v-else-if="v.type == 'time'">{{item[v.key] == 0?'/':parseTime(item[v.key])}}</span>
+            <span v-else-if="v.type == 'time'">{{item[v.key] == 0?'/':parseTime(item[v.key], v.timetype?v.timetype:'')}}</span>
             <span v-else-if="v.type == 'select'" :class="find(v.list, [v.value, item[v.key]], 'color')?find(v.list, [v.value, item[v.key]], 'color'):''">
               {{find(v.list, [v.value, item[v.key]], v.label)?find(v.list, [v.value, item[v.key]], v.label):'/'}}
             </span>

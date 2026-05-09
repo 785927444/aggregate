@@ -81,21 +81,21 @@ const setOption = {
 			seriesArr.push(temp)
 		}
 		let grid = [{top: 30, left: '0%', bottom: '0%', right: '0%', containLabel: true}]
-		let tooltip = {show: true, backgroundColor:'rgba(0,0,0,0.5)', textStyle: {color: '#FFFFFF'}, trigger: 'item', 
+		let tooltip = {show: true, backgroundColor:'rgba(0,0,0,0.5)', textStyle: {color: '#888888'}, trigger: 'item', 
 		formatter: function (p:any) {return (attr.tool_name_x?attr.tool_name_x:'x：') + p.value[0] + '<br />' + (attr.tool_name_y?attr.tool_name_y:'y：') + (Math.floor((p.value[1]*100))/100) + ' ' + (attr.tool_dw?attr.tool_dw:'')}}
 		let legend = {show: attr.legendShow,data: legendArr,align:'left',x:'right',y: 'top',top: -2,icon: "roundRect",itemWidth: 18,itemHeight: 12,
-			textStyle: {color: '#FFFFFF',rich: {a: {verticalAlign: 'middle'}},padding:[4,0,0,0]}}
+			textStyle: {color: '#888888',rich: {a: {verticalAlign: 'middle'}},padding:[4,0,0,0]}}
 		let dataZoom = [{type: 'inside',show : true,realtime : true,startValue: attr.zoomStart?attr.zoomStart:0,endValue: attr.zoomEnd?attr.zoomEnd:1000}]
 		let xAxis = {
 			type: 'category',
 			 //刻度线
 			axisTick: {show: false},
 			// 轴线
-			axisLine: {lineStyle: {color: '#6f8dcb',fontSize: newSize(12),type: 'dashed'}},
+			axisLine: {lineStyle: {color: '#888888',fontSize: newSize(12),type: 'dashed'}},
 			// 分割线
-			splitLine: {show: false,lineStyle: {color: '#6f8dcb',type: 'dashed'}},
+			splitLine: {show: false,lineStyle: {color: '#888888',type: 'dashed'}},
 			// 轴文字
-			axisLabel: {color: '#0065FF',show: true,fontSize: newSize(12),formatter:function(value:any) {return value.replace(' ', '\n')}},
+			axisLabel: {color: '#888888',show: true,fontSize: newSize(12),formatter:function(value:any) {return value.replace(' ', '\n')}},
 			z: 10
 		}
 		let yAxis = [{
@@ -110,11 +110,11 @@ const setOption = {
 			//刻度线
 			axisTick: {show: false},
 			// 轴线
-			axisLine: {show: true,lineStyle: {color: '#6f8dcb',type: 'dashed'}},
+			axisLine: {show: true,lineStyle: {color: '#888888',type: 'dashed'}},
 			// 分割线
-			splitLine: {show: false,lineStyle: {color: '#6f8dcb',type: 'dashed'}},
+			splitLine: {show: false,lineStyle: {color: '#888888',type: 'dashed'}},
 			// 轴文字
-			axisLabel: {color: '#0065FF',fontSize: newSize(12),formatter: '{value}'}
+			axisLabel: {color: '#888888',fontSize: newSize(12),formatter: '{value}'}
 		}]
 		const option = {
 			grid: grid,
@@ -159,9 +159,9 @@ const setOption = {
 				itemStyle: {
 					borderRadius: [0, 0, 0, 0],
 						color: i == 0? new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-							{ offset: 0, color: 'rgba(96, 231, 255, 1)' },
-							{ offset: 0.5, color: 'rgba(96, 231, 255, 0.5)' },
-							{ offset: 1, color: 'rgba(96, 231, 255, 0)' }
+							{ offset: 0, color: 'rgba(110, 165, 246, 1)' },
+							{ offset: 0.5, color: 'rgba(110, 165, 246, 0.5)' },
+							{ offset: 1, color: 'rgba(110, 165, 246, 0)' }
 						]) : new echarts.graphic.LinearGradient(0, 0, 0, 1, [
 							{ offset: 0, color: 'rgba(255, 200, 95, 1)' },
 							{ offset: 0.5, color: 'rgba(255, 200, 95, 0.5)' },
@@ -171,9 +171,9 @@ const setOption = {
 				emphasis: {
 					itemStyle: {
 						color: i == 0? new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-							{ offset: 0, color: 'rgba(96, 231, 255, 1)' },
-							{ offset: 0.5, color: 'rgba(96, 231, 255, 0.5)' },
-							{ offset: 1, color: 'rgba(96, 231, 255, 0)' }
+							{ offset: 0, color: 'rgba(110, 165, 246, 1)' },
+							{ offset: 0.5, color: 'rgba(110, 165, 246, 0.5)' },
+							{ offset: 1, color: 'rgba(110, 165, 246, 0)' }
 						]) : new echarts.graphic.LinearGradient(0, 0, 0, 1, [
 							{ offset: 0, color: 'rgba(255, 200, 95, 1)' },
 							{ offset: 0.5, color: 'rgba(255, 200, 95, 0.5)' },
@@ -198,21 +198,21 @@ const setOption = {
 			seriesArr.push(seriesTop)
 		}
 		let grid = [{top: 30, left: '0%', bottom: '0%', right: '0%', containLabel: true}]
-		let tooltip = {show: true, backgroundColor:'rgba(0,0,0,0.5)', textStyle: {color: '#FFFFFF'}, trigger: 'item', 
+		let tooltip = {show: true, backgroundColor:'rgba(0,0,0,0.5)', textStyle: {color: '#888888'}, trigger: 'item', 
 		formatter: function (p:any) {return (attr.tool_name_x?attr.tool_name_x:'x：') + p.value[0] + '<br />' + (attr.tool_name_y?attr.tool_name_y:'y：') + (Math.floor((p.value[1]*100))/100) + ' ' + (attr.tool_dw?attr.tool_dw:'')}}
 		let legend = {show: attr.legendShow,data: legendArr,align:'left',x:'right',y: 'top',top: -2,icon: "roundRect",itemWidth: 18,itemHeight: 12,
-			textStyle: {color: '#FFFFFF',rich: {a: {verticalAlign: 'middle'}},padding:[4,0,0,0]}}
+			textStyle: {color: '#888888',rich: {a: {verticalAlign: 'middle'}},padding:[4,0,0,0]}}
 		let dataZoom = [{type: 'inside',show : true,realtime : true,startValue: attr.zoomStart?attr.zoomStart:0,endValue: attr.zoomEnd?attr.zoomEnd:1000}]
 		let xAxis = {
 			type: 'category',
 			 //刻度线
 			axisTick: {show: false},
 			// 轴线
-			axisLine: {lineStyle: {color: '#6f8dcb',fontSize: newSize(12)}},
+			axisLine: {lineStyle: {color: '#888888',fontSize: newSize(12)}},
 			// 分割线
-			splitLine: {show: false,lineStyle: {color: '#6f8dcb'}},
+			splitLine: {show: false,lineStyle: {color: '#888888'}},
 			// 轴文字
-			axisLabel: {color: '#6f8dcb',show: true,fontSize: newSize(12),formatter:function(value:any) {return value.replace(' ', '\n')}},
+			axisLabel: {color: '#888888',show: true,fontSize: newSize(12),formatter:function(value:any) {return value.replace(' ', '\n')}},
 			z: 10
 		}
 		let yAxisShow = attr.yAxisShow===false?false:true;
@@ -228,11 +228,11 @@ const setOption = {
 			//刻度线
 			axisTick: {show: false},
 			// 轴线
-			axisLine: {show: yAxisShow,lineStyle: {color: '#6f8dcb'}},
+			axisLine: {show: yAxisShow,lineStyle: {color: '#888888'}},
 			// 分割线
 			splitLine: {show: !yAxisShow,lineStyle: {color: '#939393'}},
 			// 轴文字
-			axisLabel: {color: '#6f8dcb',fontSize: newSize(12),formatter: '{value}'}
+			axisLabel: {color: '#888888',fontSize: newSize(12),formatter: '{value}'}
 		}]
 		// console.log(seriesArr)
 		const option = {
@@ -292,26 +292,26 @@ const setOption = {
 			pieces.push(priceObj)
 			colorArr.push(colorList[j].color)
 		}
-		let tooltip = { show: true, backgroundColor:'rgba(0,0,0,0.5)', textStyle : {color: '#FFFFFF'},
+		let tooltip = { show: true, backgroundColor:'rgba(0,0,0,0.5)', textStyle : {color: '#888888'},
 			formatter: function (params:any) { return (attr.tool_name_x?attr.tool_name_x:'x：') + params.value[0] + '<br />' + (attr.tool_name_y?attr.tool_name_y:'y：') + params.value[1] + '°' + '<br />' + (attr.tool_name_z?attr.tool_name_z:'z：') + Math.floor((min<0?params.value[2]+min:params.value[2])*100)/100 + ' ' + dw }
 		}
 		let visualMap = { show: true, type: 'piecewise', selectedMode: 'multiple', splitNumber: 6, max: max, itemGap: 0, itemWidth: 14, itemHeight: 20, top:'top', symbol: "rect",                 
 			inRange: { symbol: "rect", color: colorArr },
 			outOfRange: { symbol: "rect" },
-			textStyle: { color: '#2773E6', fontSize: 12 },
+			textStyle: { color: '#888888', fontSize: 12 },
 			pieces: pieces
 		}
 		let xAxis3D = {name: attr.x_name?attr.x_name:'', type: 'value', nameGap: 30, min:0, max:p, interval: p/space,
-			splitLine: { show: true, interval: 'auto', lineStyle: { color: '#2773E6', opacity: 1, width: 1 }},
-			axisLabel: { show: true, color: '#0065FF' }
+			splitLine: { show: true, interval: 'auto', lineStyle: { color: '#888888', opacity: 1, width: 1 }},
+			axisLabel: { show: true, color: '#888888' }
 		}
 		let yAxis3D = {name: attr.y_name?attr.y_name:'', type: 'value', nameGap: 30, min:0, max:360, interval: 360/space,
-			splitLine: { show: true, interval: 'auto', lineStyle: { color: '#2773E6', opacity: 1, width: 1 }},
-			axisLabel: { show: true, color: '#0065FF', fontSize: 12, formatter: function (value:any) { return (value + '°');}}
+			splitLine: { show: true, interval: 'auto', lineStyle: { color: '#888888', opacity: 1, width: 1 }},
+			axisLabel: { show: true, color: '#888888', fontSize: 12, formatter: function (value:any) { return (value + '°');}}
 		}
 		let zAxis3D = { name: attr.z_name?attr.z_name:'', type: 'value', nameGap: 40, min: min < 0? 0 : min, max: min < 0? max - min : max, interval: (max-min)/5,
-			splitLine: { show: true, lineStyle: {color: '#2773E6', opacity: 1, width: 1}},
-			axisLabel: { show: true, color: '#0065FF', fontSize: 12, interval: (Math.abs(max) + Math.abs(min)) /2 - 1,
+			splitLine: { show: true, lineStyle: {color: '#888888', opacity: 1, width: 1}},
+			axisLabel: { show: true, color: '#888888', fontSize: 12, interval: (Math.abs(max) + Math.abs(min)) /2 - 1,
 			formatter: function (value:any, index:any) {
 				if(min < 0){ var texts = []; texts.push(zArr[index] + dw); return texts;
 				}else{ return value + dw }
@@ -319,7 +319,7 @@ const setOption = {
 		}
 		let grid3D = { show: true, top: -30, boxWidth: 90, boxHeight: 90, boxDepth: 90,
 			viewControl: { alpha: 0, beta: 90,rotateSensitivity: 1, zoomSensitivity: 1, panSensitivity: 1, autoRotate: false },
-			axisLine: { show: true, interval: 1, lineStyle: { color: '#2773E6', opacity: 0.1, width: 1 }},
+			axisLine: { show: true, interval: 1, lineStyle: { color: '#888888', opacity: 0.1, width: 1 }},
 			axisTick: { show: false },
 			axisPointer: { show: false, lineStyle: { color: 'rgba(39, 115, 230, 1)', opacity: 1, width: 1 },
 			label: { show: true, formatter: function (value:any, valueAll:any) {  return '' }, margin: 'auto', color: "#fff",

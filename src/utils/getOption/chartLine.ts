@@ -81,12 +81,12 @@
         })
       }
       let allShow = attr.allAxisShow===false?false:true;
-			let grid = [{top: 30, bottom: '0', left: '0', right: newSize(24), containLabel: true}]
-			let tooltip = {show: true, backgroundColor:'rgba(0,0,0,0.5)', textStyle: {color: '#FFFFFF'}, trigger: 'item', 
+			let grid = [{top: 30, bottom: '0', left: newSize(5), right: newSize(24), containLabel: true}]
+			let tooltip = {show: true, backgroundColor:'rgba(255,255,255,0.5)', textStyle: {color: '#888888'}, trigger: 'item', 
 			formatter: function (p:any) {return (attr.tool_name_x?attr.tool_name_x:'x：') + p.value[0] + '<br />' + (attr.tool_name_y?attr.tool_name_y:'y：') + (Math.floor((p.value[1]*100))/100) + ' ' + (attr.tool_dw?attr.tool_dw:'')}}
 			// let tooltip = {show: true, backgroundColor:'rgba(0,0,0,0.5)', textStyle: {color: '#FFFFFF'}, trigger: 'axis', axisPointer: {type: 'line', lineStyle: {color: '#a5a5a5'}}}
       let legend = {show: attr.legendShow,data: legendArr,align:'left',x:attr.legendX?attr.legendX:'right',y: 'top',top: -2,icon: "roundRect",itemWidth: 18,itemHeight: 1,
-				textStyle: {color: '#FFFFFF',rich: {a: {verticalAlign: 'middle'}},padding:[4,0,0,0]}}
+				textStyle: {color: '#888888',rich: {a: {verticalAlign: 'middle'}},padding:[4,0,0,0]}}
 			let dataZoom = [{type: 'inside',show : true,realtime : true,startValue: attr.zoomStart?attr.zoomStart:0,endValue: attr.zoomEnd?attr.zoomEnd:1000}]
 			let xAxis = {
 				type: 'category',
@@ -94,11 +94,11 @@
  				//刻度线
         axisTick: {show: false},
 				// 轴线
-				axisLine: {lineStyle: {color: '#a5a5a5',fontSize: newSize(12)},show:true},
+				axisLine: {lineStyle: {color: '#888888',fontSize: newSize(12)},show:true},
 				// 分割线
-				splitLine: {show: false,lineStyle: {color: '#a5a5a5'}},
+				splitLine: {show: false,lineStyle: {color: '#888888'}},
 				// 轴文字
-				axisLabel: {color: '#a5a5a5',show: true,fontSize: newSize(12),formatter:function(value:any) {return value.replace(' ', '\n')}},
+				axisLabel: {color: '#888888',show: true,fontSize: newSize(12),formatter:function(value:any) {return value.replace(' ', '\n')}},
 				z: 10
 			}
       
@@ -121,11 +121,11 @@
         //刻度线
         axisTick: {show: false},
         // 轴线
-				axisLine: {show: yLineShow,lineStyle: {color: '#a5a5a5'}},
+				axisLine: {show: yLineShow,lineStyle: {color: '#888888'}},
         // 分割线
-				splitLine: {show: !yLineShow,lineStyle: {color: '#939393'}},
+				splitLine: {show: !yLineShow,lineStyle: {color: '#888888'}},
         // 轴文字
-				axisLabel: {color: '#a5a5a5',fontSize: newSize(12),formatter: '{value}'}
+				axisLabel: {color: '#888888',fontSize: newSize(12),formatter: '{value}'}
 			}]
       // 双y轴
       if(attr.y_name2){
@@ -147,11 +147,11 @@
           //刻度线
           axisTick: {show: false},
           // 轴线
-          axisLine: {show: yLineShow,lineStyle: {color: '#a5a5a5'}},
+          axisLine: {show: yLineShow,lineStyle: {color: '#888888'}},
           // 分割线
-          splitLine: {show: !yLineShow,lineStyle: {color: '#939393'}},
+          splitLine: {show: !yLineShow,lineStyle: {color: '#888888'}},
           // 轴文字
-          axisLabel: {color: '#a5a5a5',fontSize: newSize(12),formatter: '{value}'}
+          axisLabel: {color: '#888888',fontSize: newSize(12),formatter: '{value}'}
         }
         yAxis.push(yAxis2)
       }

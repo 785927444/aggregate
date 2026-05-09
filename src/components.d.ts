@@ -54,6 +54,7 @@ declare module 'vue' {
     ElUpload: typeof import('element-plus/es')['ElUpload']
     Identify: typeof import('./components/Identify.vue')['default']
     IEpArrowLeftBold: typeof import('~icons/ep/arrow-left-bold')['default']
+    IEpArrowRight: typeof import('~icons/ep/arrow-right')['default']
     IEpAvatar: typeof import('~icons/ep/avatar')['default']
     IEpBell: typeof import('~icons/ep/bell')['default']
     IEpBellFilled: typeof import('~icons/ep/bell-filled')['default']
