@@ -33,9 +33,9 @@
     let chart = 'Line'
     let id = 'Line_line_1'
     let attr = {
-      min: 0, 
+      min: 0,
       // max: 100,
-      extent: 4, 
+      extent: 4,
       colorList: [],
       legendArr: [],
       legendShow: true,
@@ -43,9 +43,9 @@
       areaShow: false,
       smooth: true,
       y_name: 'kW',
-      tool_dw: '', 
-      tool_name_x: '日期：', 
-      tool_name_y: '数值：', 
+      tool_dw: '',
+      tool_name_x: '日期：',
+      tool_name_y: '数值：',
     }
     let datas = []
     let series = {data: []}

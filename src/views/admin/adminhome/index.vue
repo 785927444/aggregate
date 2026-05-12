@@ -88,9 +88,9 @@
     let devices = proxy.isNull(res.Api2) ? [] : res.Api2
     publicStore._public.devices = [...devices]
     // 模拟数据 注意需要注释
-    publicStore.data = {...data}
-    publicStore._public.loadChartData = [...loadChartData]
-    publicStore._public.rankChartData = [...rankChartData]
+    // publicStore.data = {...data}
+    // publicStore._public.loadChartData = [...loadChartData]
+    // publicStore._public.rankChartData = [...rankChartData]
     // 组装动态请求
     getQuery()
     // 获取动态数据
@@ -185,7 +185,7 @@
           if(data[key] > 0) info['alarm1'] = !info['alarm1'] ? 1 : info['alarm1'] + 1
           if(data[key] == 0) info['alarm0'] = !info['alarm0'] ? 1 : info['alarm0'] + 1
         }
-        // 工况 
+        // 工况
         if(key == 'offline') {
           info[key+data[key]] = !info[key+data[key]] ? 1 : info[key+data[key]] + 1
         }
@@ -193,7 +193,7 @@
         if(key == 'pv_inverter_status' || key == 'Operation_State' || key == '2022' || key == 'hvac_on_off_status' || key == 'loadStatus' || key == 'fanStatus') {
           info[key+data[key]] = !info[key+data[key]] ? 1 : info[key+data[key]] + 1
         }
-      } 
+      }
     })
   }
 
@@ -266,7 +266,7 @@
     let res = await publicStore.http(params)
     let todayData = res.filter(a=>{ return a>= startOfDay})
     let yesterday = res.filter(a=>{ return a< startOfDay})
-    let loadChartData = [{ name: '昨日负荷', data: [] }, { name: '今日负荷', data: [] }] 
+    let loadChartData = [{ name: '昨日负荷', data: [] }, { name: '今日负荷', data: [] }]
     res.forEach(v => {
       let time = proxy.parseTime(v.date, '{h}:{i}:{s}')
       let item = [time, v.value, v.date]

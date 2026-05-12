@@ -29,14 +29,14 @@
 	  ...publicStore.$state,
     content: [
       { width: 'w70',   show: true, align: 'center', key: '*', name: '序号' },
-      { width: 'w50x3', show: true, align: 'left', key: 'transaction_id', name: '交易编号' },  
+      { width: 'w50x3', show: true, align: 'left', key: 'transaction_id', name: '交易编号' },
       { width: 'w50x3', show: true, align: 'left', key: 'title_name', name: '交易名称' },
       { width: 'w50x2', show: true, align: 'left', key: 'response_date', name: '响应日期', type: 'time', timetype: '{y}-{m}-{d}' },
       { width: 'w50x2', show: true, align: 'left', key: 'demand_time_slot', name: '响应时段' },
-      { width: 'w50x2', show: true, align: 'left', key: 'demand_type', name: '需求类型' }, 
-      { width: 'w50x3', show: true, align: 'left', key: 'apply_capacity', name: '申报容量(kW)' }, 
-      { width: 'w50x3', show: true, align: 'left', key: 'win_capacity', name: '中标容量(kW)' }, 
-      { width: 'w50x3', show: true, align: 'left', key: 'status', name: '状态', type: 'select', list: statuss, value: 'value', label: 'name' }, 
+      { width: 'w50x2', show: true, align: 'left', key: 'demand_type', name: '需求类型' },
+      { width: 'w50x3', show: true, align: 'left', key: 'apply_capacity', name: '申报容量(kW)' },
+      { width: 'w50x3', show: true, align: 'left', key: 'win_capacity', name: '中标容量(kW)' },
+      { width: 'w50x3', show: true, align: 'left', key: 'status', name: '状态', type: 'select', list: statuss, value: 'value', label: 'name' },
       { width: 'flex1', show: true, align: 'right', key: {detail: '详情'},  name: '操作' },
     ],
   })
@@ -49,7 +49,12 @@
   }, { immediate: false, deep: true });
 
 </script>
- 
+<style>
+.layout-col > .row{
+  color: #313233;
+  background: #F1F2F7;
+}
+</style>
 <style scoped lang="scss">
 .card-title-home {
   display: block;
@@ -60,4 +65,5 @@
   border-radius: 133px;
   background: linear-gradient(0deg, #1B76FF 0%, rgba(77, 131, 238, 0) 99%);
 }
+
 </style>

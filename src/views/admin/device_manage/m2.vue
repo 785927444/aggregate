@@ -57,14 +57,14 @@
     content: [
       { width: 'w70',   show: true, align: 'center', key: '*', name: '序号' },
       // { width: 'w50x3', show: true, align: 'left', key: 'id', name: 'ID', type: 'icon5' },
-      { width: 'w50x5', show: true, align: 'left', key: 'name', name: '名称' },
+      { width: 'w50x3', show: true, align: 'left', key: 'name', name: '名称' },
       { width: 'w50x3', show: true, align: 'left', key: 'type', name: '类型', type: 'select', list: [], value: 'type', label: 'name' },
       { width: 'w50x3', show: true, align: 'left', key: 'snr', name: '调节方式', type: 'select', list: loadTypes, value: 'value', label: 'name' },
       { width: 'w50x3', show: true, align: 'left', key: 'response_type', name: '响应方式', type: 'select', list: responseTypes, value: 'value', label: 'name' },
       { width: 'w50x3', show: true, align: 'left', key: 'offline', name: '在线状态', type: 'select', list: offlines, value: 'value', label: 'name' },
       { width: 'w50x3', show: true, align: 'left', key: 'run', name: '运行状态', type: 'select', list: runs, value: 'value', label: 'name' },
       { width: 'w50x3', show: true, align: 'left', key: 'temperature', name: '当前设定温度' },
-      { width: 'flex1', show: true, align: 'right', key: {upd: '修改', del: '删除', sensorset: '配置', sensoralarm: '告警', sensorcontrol: '控制'}, name: '操作' },
+      { width: 'flex1', show: true, align: 'right', key: { datadetail: '数据详情', sensoralarm: '查看历史', upd: '修改', del: '删除',}, name: '操作' },
     ],
     editFrom: [
       { required: true, editshow: 'disabled',  name: 'ID', key: 'id',  type: 'input', class: 'number' },
@@ -92,7 +92,7 @@
     ],
     addItem: {},
     imgs: [],
-    authextra: ['sensorcontrol', 'sensoralarm', 'sensorset'],
+    authextra: ['sensorcontrol', 'sensoralarm', 'datadetail'],
     model: 't_sensor',
   })
 
@@ -198,8 +198,8 @@
     if(remark == 'del'){
       addRef.del(val)
     }
-    if(remark == 'sensorset'){
-      proxy.toPath('/sensor_cfg_property', {sensorid: val.id})
+    if(remark == 'datadetail'){
+      proxy.toPath('/datadetail', {sensorid: val.id})
     }
     if(remark == 'sensoralarm'){
       proxy.toPath('/sensor_alert_interval', {sensorid: val.id})

@@ -22,21 +22,21 @@
           <div class="ww100 flex-sc">
 
             <div class="flex-sc flex1">
-              <span class="w90 c6">需求容量：</span>
+              <span class="w70 c6">需求容量：</span>
               <span class="flex1">{{ v.market_demand_capacity?v.market_demand_capacity:'-' }} kW</span>
             </div>
             <div class="flex-sc flex1">
-              <span class="w90 c6">市场单价：</span>
+              <span class="w70 c6">市场单价：</span>
               <span class="flex1">{{ v.unit_price?v.unit_price:'-' }} 元</span>
             </div>
           </div>
           <div class="ww100 flex-sc mt5">
              <div class="flex-sc flex1">
-              <span class="w90 c6">响应日期：</span>
+              <span class="w70 c6">响应日期：</span>
               <span class="flex1">{{ v.response_date?parseTime(v.response_date, '{y}-{m}-{d}'):'-' }}</span>
             </div>
             <div class="flex-sc flex1">
-              <span class="w90 c6">需求时段：</span>
+              <span class="w70 c6">需求时段：</span>
               <span class="flex1">{{ v.demand_time_slot?v.demand_time_slot:'-' }}</span>
             </div>
           </div>
@@ -67,7 +67,7 @@ import { parseTime } from '@/utils/common'
   }, { immediate: false, deep: true });
 
 </script>
- 
+
 <style scoped lang="scss">
 .card-title-home {
   display: block;
